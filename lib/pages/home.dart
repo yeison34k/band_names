@@ -47,18 +47,33 @@ class _HomePageState extends State<HomePage> {
   }
 
   addNewBand() {
+
+    final textController = TextEditingController();
     showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
             title: Text("New band name:"),
-            content: TextField(),
+            content: TextField(
+              controller: textController,
+            ),
             actions: <Widget>[
               MaterialButton(
-                onPressed: () {},
+                child: Text("Add"),
+                elevation: 5,
+                color: Colors.blue,
+                onPressed: () => addBandToList(textController.text),
               )
             ],
           );
         });
+  }
+
+  void addBandToList(String name) {
+    if(name.length > 1){
+      this.bands.add(new Band(id: new DateTime.now().toString(), name: name, votes: 0));
+      setState(() {});
+    }
+    Navigator.pop(context);
   }
 }
