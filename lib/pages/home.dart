@@ -15,11 +15,15 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     final socketService = Provider.of<SocketService>(context, listen: false);
-    socketService.socket.on("active-bands", (payload) {
+    
+    socketService.socket.on("active-bands", (payload) {  
       this.bands = (payload as List)
         .map( (x) => Band.fromMap(x))
         .toList();
+
+        setState(() {});
     });
+
     super.initState();
   }
 
@@ -70,6 +74,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   ListTile bandTile(Band band) {
+    final socketService = Provider.of<SocketService>(context, listen: false);
     return ListTile(
       leading: CircleAvatar(
         child: Text(band.name.substring(0, 2)),
@@ -77,6 +82,10 @@ class _HomePageState extends State<HomePage> {
       title: Text(band.name),
       trailing: Text('${band.votes}', style: TextStyle(fontSize: 20)),
       onTap: () {
+
+        socketService.emit("vote-band", band.id);
+
+
         print(band.name);
       },
     );
