@@ -1,5 +1,8 @@
-import 'package:band_names/models/band.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import 'package:band_names/services/socket_service.dart';
+import 'package:band_names/models/band.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -16,8 +19,28 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final socketService = Provider.of<SocketService>(context);
+
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text("BandNames", style: TextStyle(color: Colors.black87),),
+        backgroundColor: Colors.white,
+        elevation: 1,
+        actions: <Widget>[
+          Container(
+            margin: EdgeInsets.only(right: 10),
+            child: (socketService.serverStatus != ServerStatus.Online
+                ? Icon(
+                    Icons.offline_bolt,
+                    color: Colors.red,
+                  )
+                : Icon(
+                    Icons.check_circle,
+                    color: Colors.blue[700],
+                  )),
+          )
+        ],
+      ),
       body: ListView.builder(
           itemCount: bands.length,
           itemBuilder: (BuildContext context, int index) {
@@ -47,7 +70,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   addNewBand() {
-
     final textController = TextEditingController();
     showDialog(
         context: context,
@@ -70,8 +92,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   void addBandToList(String name) {
-    if(name.length > 1){
-      this.bands.add(new Band(id: new DateTime.now().toString(), name: name, votes: 0));
+    if (name.length > 1) {
+      this.bands.add(
+          new Band(id: new DateTime.now().toString(), name: name, votes: 0));
       setState(() {});
     }
     Navigator.pop(context);

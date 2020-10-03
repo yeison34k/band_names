@@ -27,6 +27,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  socket_io: ^0.9.4
   socket_io_client: ^0.9.11
   provider: 
 
