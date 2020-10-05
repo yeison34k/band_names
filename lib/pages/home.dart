@@ -138,7 +138,7 @@ class _HomePageState extends State<HomePage> {
     return Container(
         width: double.infinity,
         height: 200,
-        child: PieChart(dataMap: dataMap),
+        child: dataMap.isNotEmpty ? PieChart(dataMap: dataMap) : null,
       ); 
   }
 }
